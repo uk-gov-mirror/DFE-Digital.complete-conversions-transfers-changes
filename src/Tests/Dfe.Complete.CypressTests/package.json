@@ -29,7 +29,7 @@
   "devDependencies": {
     "@types/node": "20.17.58",
     "@types/uuid": "9.0.8",
-    "@typescript-eslint/eslint-plugin": "6.8.0",
+    "@typescript-eslint/eslint-plugin": "6.21.0",
     "axe-core": "4.10.3",
     "csv-stringify": "6.4.6",
     "cypress": "14.4.1",
@@ -37,13 +37,13 @@
     "cypress-localstorage-commands": "2.2.8",
     "cypress-multi-reporters": "1.6.4",
     "cypress-slack-reporter": "1.5.4",
-    "eslint": "8.48.0",
-    "eslint-plugin-cypress": "2.14.0",
+    "eslint": "8.57.1",
+    "eslint-plugin-cypress": "2.15.2",
     "mocha": "10.8.2",
     "mochawesome": "7.1.4",
     "mochawesome-merge": "4.4.1",
     "mochawesome-report-generator": "6.2.0",
-    "prettier": "3.0.3",
+    "prettier": "3.6.2",
     "typescript": "5.2.2",
     "zaproxy": "2.0.0-rc.6"
   }
