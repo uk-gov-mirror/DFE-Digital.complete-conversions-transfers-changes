@@ -2427,6 +2427,9 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("activeDirectoryUserId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? ActiveDirectoryUserId { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("entraUserObjectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? EntraUserObjectId { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("assignToProject", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? AssignToProject { get; set; } = default!;
 

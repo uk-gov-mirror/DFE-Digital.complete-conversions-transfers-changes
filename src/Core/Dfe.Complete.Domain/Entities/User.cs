@@ -22,6 +22,7 @@ public class User : BaseAggregateRoot, IEntity<UserId>
     public string? LastName { get; set; }
 
     public string? ActiveDirectoryUserId { get; set; }
+    public string? EntraUserObjectId { get; set; }
 
     public bool? AssignToProject { get; set; }
 

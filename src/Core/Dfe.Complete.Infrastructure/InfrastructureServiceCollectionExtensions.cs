@@ -60,7 +60,6 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<IDaoRevocationReadRepository, DaoRevocationReadRepository>();
 
             // Authentication
-            //services.AddCustomAuthorization(config);
 
             AddInfrastructureHealthChecks(services);
 

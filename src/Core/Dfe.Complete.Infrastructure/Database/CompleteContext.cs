@@ -377,6 +377,9 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.Team)
             .HasMaxLength(4000)
             .HasColumnName("team");
+        projectConfiguration.Property(e => e.EntraUserObjectId)
+            .HasMaxLength(4000)
+            .HasColumnName("entra_user_object_id");
         projectConfiguration.Property(e => e.UpdatedAt)
             .HasPrecision(6)
             .HasColumnName("updated_at");
@@ -390,6 +393,12 @@ public partial class CompleteContext : DbContext
             .HasMany(c => c.ProjectAssignedTos)
             .WithOne(e => e.AssignedTo)
             .HasForeignKey(e => e.AssignedToId);
+
+        projectConfiguration
+            .HasIndex(e => e.EntraUserObjectId)
+            .IsUnique()
+            .HasDatabaseName("UQ_users_entra_user_object_id")
+            .HasFilter("[entra_user_object_id] IS NOT NULL");
     }
 
     private static void ConfigureContact(EntityTypeBuilder<Contact> projectConfiguration)

@@ -42,6 +42,9 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - create transfer project end point deleted due to in-app project creations being a workaround 
 - create MAT transfer project end point deleted due to in-app project creations being a workaround 
 
+### Changed
+- Identify user by entra_user_object_id instead of active_directory_user_id
+
 ### Fixed
 - Fixed assign project return url issue.
 
