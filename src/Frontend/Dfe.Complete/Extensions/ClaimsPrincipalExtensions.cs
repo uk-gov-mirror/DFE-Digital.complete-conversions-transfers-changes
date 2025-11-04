@@ -12,7 +12,7 @@ namespace Dfe.Complete.Extensions
 {
     public static class ClaimsPrincipalExtensions
     {
-        public static string GetUserAdId(this ClaimsPrincipal value)
+        public static string GetUserOid(this ClaimsPrincipal value)
         {
             var userAdId = value.Claims.SingleOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
             return userAdId ?? throw new InvalidOperationException("User does not have an objectidentifier claim.");
@@ -35,9 +35,9 @@ namespace Dfe.Complete.Extensions
 
         public static async Task<UserDto> GetUser(this ClaimsPrincipal value, ISender sender)
         {
-            var userAdId = value.GetUserAdId();
+            var objectId = value.GetUserOid();
 
-            var request = new GetUserByAdIdQuery(userAdId);
+            var request = new GetUserByOidQuery(objectId);
             var userResult = await sender.Send(request);
 
             if (!userResult.IsSuccess || userResult.Value == null)

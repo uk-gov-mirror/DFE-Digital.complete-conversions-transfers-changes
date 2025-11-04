@@ -30,13 +30,13 @@ namespace Dfe.Complete.Tests.Pages.Projects
     {
         private static UserDto GetUser()
         {
-            return new UserDto { ActiveDirectoryUserId = "test-ad-id", FirstName = "Test", LastName = "User", Team = "Support team" };
+            return new UserDto { EntraUserObjectId = "test-ad-id", FirstName = "Test", LastName = "User", Team = "Support team" };
         }
 
         private static PageContext GetPageContext()
         {
             var expectedUser = GetUser();
-            var claims = new List<Claim> { new Claim("objectidentifier", expectedUser?.ActiveDirectoryUserId!) };
+            var claims = new List<Claim> { new Claim("objectidentifier", expectedUser?.EntraUserObjectId!) };
             var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
 
             var httpContext = new DefaultHttpContext()
@@ -87,7 +87,7 @@ namespace Dfe.Complete.Tests.Pages.Projects
             var userResult = Result<UserDto?>.Success(userDto);
 
             mockSender
-                .Setup(s => s.Send(It.Is<GetUserByAdIdQuery>(q => q.UserAdId == userDto.ActiveDirectoryUserId), default))
+                .Setup(s => s.Send(It.Is<GetUserByOidQuery>(q => q.ObjectId == userDto.EntraUserObjectId), default))
                 .ReturnsAsync(userResult);
 
             var establishment = new EstablishmentDto
@@ -98,7 +98,7 @@ namespace Dfe.Complete.Tests.Pages.Projects
             };
 
             mockSender.Setup(s => s.Send(new GetEstablishmentByUrnRequest(project.Urn.Value.ToString()), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<EstablishmentDto>.Success(establishment));
+                .ReturnsAsync(Result<EstablishmentDto?>.Success(establishment));
 
             mockSender.Setup(s => s.Send(new GetGiasEstablishmentByUrnQuery(project.AcademyUrn), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<GiasEstablishmentDto?>.Failure("Database error"));
@@ -148,7 +148,7 @@ namespace Dfe.Complete.Tests.Pages.Projects
                 Name = "Park View Primary School",
             };
             mockSender.Setup(s => s.Send(new GetEstablishmentByUrnRequest(project.Urn.Value.ToString()), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<EstablishmentDto>.Success(establishment));
+                .ReturnsAsync(Result<EstablishmentDto?>.Success(establishment));
 
             var academy = new GiasEstablishmentDto
             {
@@ -165,7 +165,7 @@ namespace Dfe.Complete.Tests.Pages.Projects
                 Ukprn = project.IncomingTrustUkprn.Value.ToString()
             };
             mockSender.Setup(s => s.Send(new GetTrustByUkprnRequest(project.IncomingTrustUkprn.Value.ToString()), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<TrustDto>.Success(incomingTrust));
+                .ReturnsAsync(Result<TrustDto?>.Success(incomingTrust));
 
             var outgoingTrust = new TrustDto
             {
@@ -173,13 +173,13 @@ namespace Dfe.Complete.Tests.Pages.Projects
                 Ukprn = project.OutgoingTrustUkprn.Value.ToString()
             };
             mockSender.Setup(s => s.Send(new GetTrustByUkprnRequest(project.OutgoingTrustUkprn.Value.ToString()), It.IsAny<CancellationToken>()))
-               .ReturnsAsync(Result<TrustDto>.Success(outgoingTrust));
+               .ReturnsAsync(Result<TrustDto?>.Success(outgoingTrust));
 
             var userDto = GetUser();
             var userResult = Result<UserDto?>.Success(userDto);
 
             mockSender
-                .Setup(s => s.Send(It.Is<GetUserByAdIdQuery>(q => q.UserAdId == userDto.ActiveDirectoryUserId), default))
+                .Setup(s => s.Send(It.Is<GetUserByOidQuery>(q => q.ObjectId == userDto.EntraUserObjectId), default))
                 .ReturnsAsync(userResult);
 
             var group = new ProjectGroupDto

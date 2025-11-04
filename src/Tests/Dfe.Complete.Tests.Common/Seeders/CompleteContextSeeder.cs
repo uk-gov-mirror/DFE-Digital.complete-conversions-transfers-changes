@@ -26,25 +26,6 @@ public static class CompleteContextSeeder
             Team = ProjectTeam.SouthWest.ToDescription(),
         };
 
-        var duplicateAdidProjectUserOne = new User
-        {
-            Id = new UserId(Guid.NewGuid()),
-            Team = ProjectTeam.SouthWest.ToDescription(),
-            CreatedAt = DateTime.UtcNow.AddDays(-2),
-            DeactivatedAt = DateTime.UtcNow.AddDays(-1),
-            FirstName = "Deactivated",
-            ActiveDirectoryUserId = "duplicateAdId"
-        };
-
-        var duplicateAdidProjectUserTwo = new User
-        {
-            Id = new UserId(Guid.NewGuid()),
-            Team = ProjectTeam.SouthWest.ToDescription(),
-            ActiveDirectoryUserId = "duplicateAdId",
-            CreatedAt = DateTime.UtcNow.AddDays(-1),
-            FirstName = "Active"
-        };
-
         var projectGroup = new ProjectGroup
         {
             Id = new ProjectGroupId(Guid.NewGuid()),
@@ -63,8 +44,6 @@ public static class CompleteContextSeeder
         context.ProjectGroups.Add(projectGroup);
         context.Users.Add(projectUser);
         context.Users.Add(secondProjectUser);
-        context.Users.Add(duplicateAdidProjectUserOne);
-        context.Users.Add(duplicateAdidProjectUserTwo);
         context.SaveChanges();
     }
 }

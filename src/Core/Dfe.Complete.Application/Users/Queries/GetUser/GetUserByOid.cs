@@ -8,18 +8,16 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Users.Queries.GetUser;
 
-[Obsolete("Use GetUserByOidQuery instead")]
-public record GetUserByAdIdQuery(string UserAdId) : IRequest<Result<UserDto?>>;
+public record GetUserByOidQuery(string ObjectId) : IRequest<Result<UserDto?>>;
 
-[Obsolete("Use GetUserByOidQuery instead")]
-public class GetUserByAdIdQueryHandler(ICompleteRepository<User> userRepository, IMapper mapper, ILogger<GetUserByAdIdQueryHandler> logger) : IRequestHandler<GetUserByAdIdQuery, Result<UserDto?>>
+public class GetUserByOidQueryHandler(ICompleteRepository<User> userRepository, IMapper mapper, ILogger<GetUserByOidQueryHandler> logger) : IRequestHandler<GetUserByOidQuery, Result<UserDto?>>
 {
-    public async Task<Result<UserDto?>> Handle(GetUserByAdIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<UserDto?>> Handle(GetUserByOidQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var user = await userRepository.FindAsync(u =>
-                u.ActiveDirectoryUserId == request.UserAdId
+                u.EntraUserObjectId == request.ObjectId
                 && u.DeactivatedAt == null, cancellationToken);
 
             var userDto = mapper.Map<UserDto?>(user);
@@ -28,7 +26,7 @@ public class GetUserByAdIdQueryHandler(ICompleteRepository<User> userRepository,
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Exception for {Name} Request - {@Request}", nameof(GetUserByAdIdQueryHandler), request);
+            logger.LogError(e, "Exception for {Name} Request - {@Request}", nameof(GetUserByOidQueryHandler), request);
             return Result<UserDto?>.Failure(e.Message);
         }
     }

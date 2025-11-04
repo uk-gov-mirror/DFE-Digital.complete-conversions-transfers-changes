@@ -85,7 +85,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetProjectByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(successResult);
 
-        sender.Send(Arg.Any<GetUserByAdIdQuery>(), Arg.Any<CancellationToken>())
+        sender.Send(Arg.Any<GetUserByOidQuery>(), Arg.Any<CancellationToken>())
             .Returns(userResult);
 
         sender.Send(Arg.Any<GetTransferTasksDataByIdQuery>(), Arg.Any<CancellationToken>())
@@ -156,7 +156,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetProjectByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(successResult);
 
-        sender.Send(Arg.Any<GetUserByAdIdQuery>(), Arg.Any<CancellationToken>())
+        sender.Send(Arg.Any<GetUserByOidQuery>(), Arg.Any<CancellationToken>())
           .Returns(userResult);
 
         sender.Send(Arg.Any<GetConversionTasksDataByIdQuery>(), Arg.Any<CancellationToken>())
@@ -227,7 +227,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetProjectByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(successResult);
 
-        sender.Send(Arg.Any<GetUserByAdIdQuery>(), Arg.Any<CancellationToken>())
+        sender.Send(Arg.Any<GetUserByOidQuery>(), Arg.Any<CancellationToken>())
           .Returns(userResult);
 
         sender.Send(Arg.Any<GetTransferTasksDataByIdQuery>(), Arg.Any<CancellationToken>())
@@ -301,7 +301,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetProjectByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(successResult);
 
-        sender.Send(Arg.Any<GetUserByAdIdQuery>(), Arg.Any<CancellationToken>())
+        sender.Send(Arg.Any<GetUserByOidQuery>(), Arg.Any<CancellationToken>())
          .Returns(userResult);
 
         sender.Send(Arg.Any<GetConversionTasksDataByIdQuery>(), Arg.Any<CancellationToken>())

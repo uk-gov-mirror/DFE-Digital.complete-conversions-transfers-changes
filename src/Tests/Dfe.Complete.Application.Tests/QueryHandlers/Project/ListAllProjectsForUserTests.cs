@@ -52,7 +52,7 @@ public class ListAllProjectsForUserTests
             _mockLogger.Object);
 
         // Simulate user lookup returns null value
-        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByOidQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Success(null));
 
         var query = new ListAllProjectsForUserQuery(
@@ -97,7 +97,7 @@ public class ListAllProjectsForUserTests
 
         var userDto = fixture.Create<UserDto>();
 
-        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByOidQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
 
         var mockListAllProjectsForUserQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
@@ -146,9 +146,9 @@ public class ListAllProjectsForUserTests
                 orderBy: Arg.Any<OrderProjectQueryBy>())
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
-        Assert.NotNull(userDto.ActiveDirectoryUserId);
+        Assert.NotNull(userDto.EntraUserObjectId);
 
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter,
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.EntraUserObjectId, filter,
             ordering)
         { Page = 1 };
 
@@ -240,10 +240,10 @@ public class ListAllProjectsForUserTests
                 orderBy: Arg.Any<OrderProjectQueryBy>())
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
-        Assert.NotNull(userDto.ActiveDirectoryUserId);
+        Assert.NotNull(userDto.EntraUserObjectId);
 
         var query = new ListAllProjectsForUserQuery(ProjectState.Active, null, filter,
-            ordering, userDto.Email)
+            ordering, userDto.EntraUserObjectId)
         { Page = 1 };
 
         //Act
@@ -278,7 +278,7 @@ public class ListAllProjectsForUserTests
             mockSender.Object, _mockLogger.Object);
 
         var userDto = fixture.Create<UserDto>();
-        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByOidQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
 
         var mockListAllProjectsForUserQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50);
@@ -307,8 +307,8 @@ public class ListAllProjectsForUserTests
                 orderBy: Arg.Any<OrderProjectQueryBy>())
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
-        Assert.NotNull(userDto.ActiveDirectoryUserId);
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter,
+        Assert.NotNull(userDto.EntraUserObjectId);
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.EntraUserObjectId, filter,
             ordering)
         { Page = 50 };
 
@@ -345,11 +345,11 @@ public class ListAllProjectsForUserTests
         const string errorMessage = "this is a test";
 
         var userDto = fixture.Create<UserDto>();
-        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByOidQuery>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception(errorMessage));
-        Assert.NotNull(userDto.ActiveDirectoryUserId);
+        Assert.NotNull(userDto.EntraUserObjectId);
 
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter,
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.EntraUserObjectId, filter,
             ordering)
         { Page = 50 };
 
@@ -382,7 +382,7 @@ public class ListAllProjectsForUserTests
             mockLogger.Object);
 
         var userDto = fixture.Create<UserDto>();
-        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByOidQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
 
         var dummyProjects = fixture.CreateMany<ListAllProjectsQueryModel>(3).ToList();
@@ -396,7 +396,7 @@ public class ListAllProjectsForUserTests
         mockTrustsClient.Setup(service => service.GetByUkprnsAllAsync(It.IsAny<IEnumerable<string>>(), default))
             .ReturnsAsync([]);
 
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId!, filter, ordering) { Page = 0 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.EntraUserObjectId!, filter, ordering) { Page = 0 };
 
         // Act
         var result = await handler.Handle(query, default);
@@ -436,7 +436,7 @@ public class ListAllProjectsForUserTests
             mockSender.Object, _mockLogger.Object);
 
         var userDto = fixture.Create<UserDto>();
-        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByOidQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
 
         var mockListAllProjectsForUserQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(0);
@@ -447,8 +447,8 @@ public class ListAllProjectsForUserTests
                 orderBy: Arg.Any<OrderProjectQueryBy>())
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
-        Assert.NotNull(userDto.ActiveDirectoryUserId);
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter,
+        Assert.NotNull(userDto.EntraUserObjectId);
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.EntraUserObjectId, filter,
             ordering)
         { Page = 50 };
 

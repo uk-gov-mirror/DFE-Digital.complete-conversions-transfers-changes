@@ -68,7 +68,7 @@ public class BaseProjectTaskModelTests
         var mockPageContext = new PageContext { HttpContext = new DefaultHttpContext { User = mockUser.Object } };
 
         _mockSender
-            .Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), default))
+            .Setup(s => s.Send(It.IsAny<GetUserByOidQuery>(), default))
             .ReturnsAsync(Result<UserDto?>.Success(new UserDto
             {
                 ActiveDirectoryUserId = "MockObjectIdentifier",

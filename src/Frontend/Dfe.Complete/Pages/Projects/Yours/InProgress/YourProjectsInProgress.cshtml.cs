@@ -17,7 +17,7 @@ public class YourProjectsInProgress(ISender sender) : YourProjectsModel(InProgre
     {
         ViewData[TabNavigationModel.ViewDataKey] = YourProjectsTabNavigationModel;
 
-        var userAdId = User.GetUserAdId();
+        var userAdId = User.GetUserOid();
 
         var result = await sender.Send(new ListAllProjectsForUserQuery(ProjectState.Active, userAdId,
                 ProjectUserFilter.AssignedTo,

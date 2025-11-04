@@ -24,7 +24,7 @@ namespace Dfe.Complete.Tests.Extensions
             var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
 
             // Act
-            var result = principal.GetUserAdId();
+            var result = principal.GetUserOid();
 
             // Assert
             Assert.Equal("12345-abcde", result);
@@ -42,7 +42,7 @@ namespace Dfe.Complete.Tests.Extensions
 
             // Act & Assert
             var exception = Assert.Throws<InvalidOperationException>(() =>
-                principal.GetUserAdId());
+                principal.GetUserOid());
 
             Assert.Equal("User does not have an objectidentifier claim.", exception.Message);
         }
@@ -78,7 +78,7 @@ namespace Dfe.Complete.Tests.Extensions
             var userResult = Result<UserDto?>.Success(userDto);
 
             mockSender
-                .Setup(s => s.Send(It.Is<GetUserByAdIdQuery>(q => q.UserAdId == userAdId), default))
+                .Setup(s => s.Send(It.Is<GetUserByOidQuery>(q => q.ObjectId == userAdId), default))
                 .ReturnsAsync(userResult);
 
             // Act
@@ -96,18 +96,18 @@ namespace Dfe.Complete.Tests.Extensions
             var claims = new List<Claim> { new Claim("objectidentifier", userAdId) };
             var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
 
-            var expectedUser = new UserDto { ActiveDirectoryUserId = userAdId };
+            var expectedUser = new UserDto { EntraUserObjectId = userAdId };
 
             var senderMock = new Mock<ISender>();
-            senderMock.Setup(s => s.Send(It.Is<GetUserByAdIdQuery>(q => q.UserAdId == userAdId), It.IsAny<CancellationToken>()))
-                      .ReturnsAsync(Result<UserDto>.Success(expectedUser));
+            senderMock.Setup(s => s.Send(It.Is<GetUserByOidQuery>(q => q.ObjectId == userAdId), It.IsAny<CancellationToken>()))
+                      .ReturnsAsync(Result<UserDto?>.Success(expectedUser));
 
             // Act
             var result = await principal.GetUser(senderMock.Object);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(expectedUser.ActiveDirectoryUserId, result.ActiveDirectoryUserId);
+            Assert.Equal(expectedUser.EntraUserObjectId, result.EntraUserObjectId);
         }
 
         [Fact]
@@ -119,8 +119,8 @@ namespace Dfe.Complete.Tests.Extensions
             var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
 
             var senderMock = new Mock<ISender>();
-            senderMock.Setup(s => s.Send(It.Is<GetUserByAdIdQuery>(q => q.UserAdId == userAdId), It.IsAny<CancellationToken>()))
-                      .ReturnsAsync(Result<UserDto>.Failure("User not found"));
+            senderMock.Setup(s => s.Send(It.Is<GetUserByOidQuery>(q => q.ObjectId == userAdId), It.IsAny<CancellationToken>()))
+                      .ReturnsAsync(Result<UserDto?>.Failure("User not found"));
 
             // Act & Assert
             await Assert.ThrowsAsync<NotFoundException>(() => principal.GetUser(senderMock.Object));

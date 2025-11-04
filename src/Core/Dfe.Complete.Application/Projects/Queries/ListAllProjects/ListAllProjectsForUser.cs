@@ -34,7 +34,7 @@ public class ListAllProjectsForUserQueryHandler(
             Result<UserDto?>? user = null;
             if (!string.IsNullOrEmpty(request.UserAdId))
             {
-                user = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
+                user = await sender.Send(new GetUserByOidQuery(request.UserAdId), cancellationToken);
             }
 
             if (!string.IsNullOrEmpty(request.UserEmail))

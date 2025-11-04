@@ -29,6 +29,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.True(user.CreatedAt <= DateTime.UtcNow);
             Assert.True(user.UpdatedAt <= DateTime.UtcNow);
             Assert.Null(user.ActiveDirectoryUserId);
+            Assert.Null(user.EntraUserObjectId);
             Assert.Null(user.ActiveDirectoryUserGroupIds);
             Assert.Null(user.ManageUserAccounts);
             Assert.False(user.ManageConversionUrns);

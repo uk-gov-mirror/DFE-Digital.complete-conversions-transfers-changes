@@ -14,7 +14,7 @@ namespace Dfe.Complete.Tests.MockData
         public static PageContext GetPageContext()
         {
             var expectedUser = GetUser();
-            var claims = new List<Claim> { new Claim("objectidentifier", expectedUser?.ActiveDirectoryUserId!) };
+            var claims = new List<Claim> { new("objectidentifier", expectedUser?.EntraUserObjectId!) };
             var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
 
             var httpContext = new DefaultHttpContext()
@@ -36,7 +36,7 @@ namespace Dfe.Complete.Tests.MockData
 
         public static UserDto GetUser()
         {
-            return new UserDto { ActiveDirectoryUserId = "test-ad-id", FirstName = "Test", LastName = "User", Team = "Support team" };
+            return new UserDto { EntraUserObjectId = "test-ad-id", FirstName = "Test", LastName = "User", Team = "Support team" };
         }
     }
 

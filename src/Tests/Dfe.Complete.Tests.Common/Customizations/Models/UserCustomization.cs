@@ -27,6 +27,8 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 
         public string? ActiveDirectoryUserId { get; set; }
 
+        public string? EntraUserObjectId { get; set; }
+
         public bool? AssignToProject { get; set; }
 
         public bool? ManageUserAccounts { get; set; }
@@ -56,6 +58,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                    .With(x => x.FirstName, fixture.Create<string>())
                    .With(x => x.LastName, fixture.Create<string>())
                    .With(x => x.ActiveDirectoryUserId, fixture.Create<string>())
+                   .With(x => x.EntraUserObjectId, fixture.Create<string>())
                    .With(x => x.AssignToProject, fixture.Create<bool?>())
                    .With(x => x.ManageUserAccounts, fixture.Create<bool?>())
                    .With(x => x.ActiveDirectoryUserGroupIds, fixture.Create<string>())
