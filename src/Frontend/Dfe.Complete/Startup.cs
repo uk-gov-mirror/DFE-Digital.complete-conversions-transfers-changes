@@ -60,42 +60,39 @@ public class Startup
         services.AddFeatureManagement();
         services.AddHealthChecks();
         services
-            .AddRazorPages(options =>
-            {
-                options.Conventions.AuthorizeFolder("/", UserPolicyConstants.ActiveUser);
-                options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
-                options.Conventions.AllowAnonymousToFolder("/Public");
-            })
-            .AddViewOptions(options =>
-            {
-                options.HtmlHelperOptions.ClientValidationEnabled = false;
-            });
+        .AddRazorPages(options =>
+        {
+            options.Conventions.AuthorizeFolder("/", UserPolicyConstants.ActiveUser);
+            options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
+            options.Conventions.AllowAnonymousToFolder("/Public");
+        })
+        .AddViewOptions(options =>
+        {
+            options.HtmlHelperOptions.ClientValidationEnabled = false;
+        });
 
         SetupApplicationInsights(services);
 
         services.AddControllersWithViews()
-           .AddMicrosoftIdentityUI()
-           .AddCookieTempDataProvider(options =>
-           {
-               options.Cookie.Name = ".Complete.TempData";
-               options.Cookie.HttpOnly = true;
-               options.Cookie.IsEssential = true;
-               if (string.IsNullOrEmpty(Configuration["CI"]))
-               {
-                   options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-               }
-               options.Cookie.SameSite = SameSiteMode.Lax;
-           })
-           .AddCustomAntiForgeryHandling(opts =>
-           {
-               opts.CheckerGroups =
-               [
-                   new() {
-                       TypeNames   = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
-                       CheckerOperator = CheckerOperator.Or
-                   }
-               ];
-           });
+        .AddMicrosoftIdentityUI()
+        .AddCookieTempDataProvider(options =>
+        {
+            options.Cookie.Name = ".Complete.TempData";
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+            if (string.IsNullOrEmpty(Configuration["CI"]))
+            {
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            }
+            options.Cookie.SameSite = SameSiteMode.Lax;
+        })
+        .AddCustomAntiForgeryHandling(opts =>
+        {
+            opts.CheckerGroups = [new() {
+                TypeNames   = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
+                CheckerOperator = CheckerOperator.Or
+            }];
+        });
         services.AddControllers().AddMicrosoftIdentityUI();
 
         // Configure antiforgery AFTER all services are added to ensure our settings take precedence
@@ -173,9 +170,9 @@ public class Startup
         app.UseMiddleware<ExceptionHandlerMiddleware>();
 
         app.UseSecurityHeaders(
-           SecurityHeadersDefinitions.GetHeaderPolicyCollection(env.IsDevelopment())
-              .AddXssProtectionDisabled()
-              .AddCustomHeader("Cross-Origin-Opener-Policy", "same-origin")
+        SecurityHeadersDefinitions.GetHeaderPolicyCollection(env.IsDevelopment())
+            .AddXssProtectionDisabled()
+            .AddCustomHeader("Cross-Origin-Opener-Policy", "same-origin")
         );
 
         app.UseStatusCodePagesWithReExecute("/Errors", "?statusCode={0}");
@@ -204,19 +201,20 @@ public class Startup
     private void ConfigureCookies(IServiceCollection services)
     {
         services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme,
-           options =>
-           {
-               options.AccessDeniedPath = "/access-denied";
-               options.Cookie.Name = ".Complete.Login";
-               options.Cookie.HttpOnly = true;
-               options.Cookie.IsEssential = true;
-               options.ExpireTimeSpan = _authenticationExpiration;
-               options.SlidingExpiration = true;
-               if (string.IsNullOrEmpty(Configuration["CI"]))
-               {
-                   options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-               }
-           });
+        options =>
+        {
+            options.LoginPath = "/sign-in";
+            options.AccessDeniedPath = "/access-denied";
+            options.Cookie.Name = ".Complete.Login";
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+            options.ExpireTimeSpan = _authenticationExpiration;
+            options.SlidingExpiration = true;
+            if (string.IsNullOrEmpty(Configuration["CI"]))
+            {
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            }
+        });
     }
 
     private void SetupApplicationInsights(IServiceCollection services) => services.Configure<ApplicationInsightsOptions>(Configuration.GetSection("ApplicationInsights"));

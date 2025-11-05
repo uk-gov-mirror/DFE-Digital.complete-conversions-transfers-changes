@@ -1,0 +1,42 @@
+@page "/sign-in"
+@model Dfe.Complete.Pages.Public.SignIn
+
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
+@{
+    ViewBag.Title = "Sign in";
+    Layout = "Shared/_Layout";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+            Sign in
+        </h1>
+        <p class="govuk-body">This product can be used by delivery officers or caseworkers at the Department for Education.</p>
+        <p class="govuk-body">It can also be used by the Academies Operational Practice Unit and Service Support team, as well as some teams at the Education and Skills Funding Agency.</p>
+        <p class="govuk-body">You can use this product to manage work that helps DfE to convert schools to academies.</p>
+        
+        <form action="/auth/azure_activedirectory_v2" method="post">
+            @* @Html.AntiForgeryToken() *@
+            <button name="button" type="submit" class="govuk-button">Sign in with your DfE Microsoft account</button>
+        </form>
+        
+        <h2 class="govuk-heading-m">Register for access</h2>
+        <p class="govuk-body">If you do not have access you can <external-link href="@Configuration["ExternalLinks:SignUpForAccess"]" class="govuk-link">sign up to use Complete conversions, transfers and changes (opens in new tab)</external-link>.</p>
+        <p class="govuk-body">To register, you'll need to provide your:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>full name</li>
+            <li>@@education.gov.uk email address</li>
+            <li>team information</li>
+            <li>job title</li>
+        </ul>
+        
+        <h2 class="govuk-heading-m">How to use Complete conversions, transfers and changes</h2>
+        <p class="govuk-body">You can <external-link href="@Configuration["HowToUseLink"]" class="govuk-link">read our guidance about how to use the product (opens in new tab)</external-link> if you're new to Complete conversions transfers and changes or just unsure on how to do certain things with it.</p>
+        
+        <h2 class="govuk-heading-m">Updates and releases</h2>
+        <p class="govuk-body">We regularly update the product and release new versions of it, based on user feedback.</p>
+        <p class="govuk-body">You can <external-link href="@Configuration["ExternalLinks:ReleaseNotes"]" class="govuk-link">read our release notes (opens in new tab)</external-link> to find out what we've done to improve the product.</p>
+    </div>
+</div>
