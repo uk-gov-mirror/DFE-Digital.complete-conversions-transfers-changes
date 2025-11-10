@@ -1,7 +1,6 @@
 using Azure.Identity;
 using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Configuration;
-using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Logging.Middleware;
@@ -16,10 +15,8 @@ using GovUK.Dfe.CoreLibs.Security.Authorization;
 using GovUK.Dfe.CoreLibs.Security.Cypress;
 using GovUK.Dfe.CoreLibs.Security.Enums;
 using Microsoft.AspNetCore.Antiforgery;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FeatureManagement;
@@ -64,15 +61,14 @@ public class Startup
         services
             .AddRazorPages(options =>
             {
-                // Protect everything under root with ActiveUser policy...
-                // options.Conventions.AuthorizeFolder("/", UserPolicyConstants.ActiveUser);
+                options.Conventions.AuthorizeFolder("/");
 
                 // Routes
                 options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
 
                 // ...except explicitly anonymous/public areas
                 options.Conventions.AllowAnonymousToFolder("/Public");
-                // options.Conventions.AllowAnonymousToFolder("/Errors");
+                options.Conventions.AllowAnonymousToFolder("/Errors");
             })
             .AddViewOptions(options =>
             {
@@ -134,17 +130,7 @@ public class Startup
         services.AddHttpContextAccessor();
 
         services.AddApplicationAuthorization(Configuration, CustomPolicies.PolicyCustomizations);
-        // services.AddScoped<IAuthorizationHandler, ActiveUserAuthorizationHandler>();
 
-        // === Authentication configuration ===
-        //
-        // Goal:
-        // - Use MultiAuth (from Cypress libs) for reading the user.
-        // - For unauthenticated access to [Authorize] endpoints:
-        //     -> challenge uses the COOKIE scheme
-        //     -> COOKIE scheme redirects to /sign-in
-        // - /sign-in explicitly triggers the OIDC challenge.
-        //
         var authenticationBuilder = services
             .AddAuthentication(options =>
             {
@@ -158,7 +144,7 @@ public class Startup
 
         authenticationBuilder.AddMicrosoftIdentityWebApp(
             Configuration.GetSection("AzureAd"),
-            OpenIdConnectDefaults.AuthenticationScheme // "OpenIdConnect"
+            OpenIdConnectDefaults.AuthenticationScheme
         );
 
         // Configure the primary auth cookie: login + access denied behaviour.

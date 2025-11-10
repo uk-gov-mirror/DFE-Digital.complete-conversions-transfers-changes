@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Public;
 
-// TODO kill custom database claims provider
-// TODO kill active user check
-// TODO 
-[AllowAnonymous]
 public class SignInModel : PageModel
 {
     public string? ReturnUrl { get; private set; }

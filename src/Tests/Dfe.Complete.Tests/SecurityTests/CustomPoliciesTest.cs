@@ -1,5 +1,4 @@
 using Dfe.Complete.Domain.Constants;
-using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -60,10 +59,7 @@ public class CustomPoliciesIntegrationTests
         ["CanCreateProjects", new[] { "regional_casework_services" }, false],
         ["CanCreateProjects", new[] { "regional_casework_services", "manage_team" }, false],
         ["CanCreateProjects", new[] { "regional_delivery_officer" }, false],
-        ["CanCreateProjects", new[] { "regional_delivery_officer", "manage_team" }, false],
-        ["ActiveUser", Array.Empty<string>(), false],
-        ["ActiveUser", new[] { "some_role" }, false],
-        ["ActiveUser", new[] { "some_role" }, true, true] // true for hasUserId parameter
+        ["CanCreateProjects", new[] { "regional_delivery_officer", "manage_team" }, false]
     };
 
     [Theory]
@@ -103,9 +99,6 @@ public class CustomPoliciesIntegrationTests
             }
         });
 
-        // Register the ActiveUserAuthorizationHandler for ActiveUser policy tests
-        services.AddScoped<IAuthorizationHandler, ActiveUserAuthorizationHandler>();
-
         var serviceProvider = services.BuildServiceProvider();
         var authorizationService = serviceProvider.GetRequiredService<IAuthorizationService>();
 
@@ -114,44 +107,5 @@ public class CustomPoliciesIntegrationTests
 
         // Assert
         Assert.Equal(expectedOutcome, result.Succeeded);
-    }
-
-    [Fact]
-    public async Task ActiveUserPolicy_RequiresUserIdClaim()
-    {
-        // Arrange
-        var services = new ServiceCollection();
-        services.AddLogging();
-        services.AddAuthorizationBuilder()
-            .AddPolicy(UserPolicyConstants.ActiveUser, builder =>
-            {
-                builder.RequireAuthenticatedUser();
-                builder.AddRequirements(new ActiveUserRequirement());
-            });
-        services.AddScoped<IAuthorizationHandler, ActiveUserAuthorizationHandler>();
-
-        var serviceProvider = services.BuildServiceProvider();
-        var authorizationService = serviceProvider.GetRequiredService<IAuthorizationService>();
-
-        // Test user without UserId claim
-        var identityWithoutUserId = new ClaimsIdentity("TestScheme");
-        identityWithoutUserId.AddClaim(new Claim("sub", "test-user"));
-        identityWithoutUserId.AddClaim(new Claim(ClaimTypes.Role, "some_role"));
-        var userWithoutUserId = new ClaimsPrincipal(identityWithoutUserId);
-
-        // Test user with UserId claim
-        var identityWithUserId = new ClaimsIdentity("TestScheme");
-        identityWithUserId.AddClaim(new Claim("sub", "test-user"));
-        identityWithUserId.AddClaim(new Claim(ClaimTypes.Role, "some_role"));
-        identityWithUserId.AddClaim(new Claim(CustomClaimTypeConstants.UserId, "test-user-id"));
-        var userWithUserId = new ClaimsPrincipal(identityWithUserId);
-
-        // Act
-        var resultWithoutUserId = await authorizationService.AuthorizeAsync(userWithoutUserId, UserPolicyConstants.ActiveUser);
-        var resultWithUserId = await authorizationService.AuthorizeAsync(userWithUserId, UserPolicyConstants.ActiveUser);
-
-        // Assert
-        Assert.False(resultWithoutUserId.Succeeded, "User without UserId claim should be denied access");
-        Assert.True(resultWithUserId.Succeeded, "User with UserId claim should be granted access");
     }
 }
