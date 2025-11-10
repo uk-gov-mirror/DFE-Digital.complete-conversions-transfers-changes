@@ -1,14 +1,44 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dfe.Complete.Pages.Public
+namespace Dfe.Complete.Pages.Public;
+
+// TODO kill custom database claims provider
+// TODO kill active user check
+// TODO 
+[AllowAnonymous]
+public class SignInModel : PageModel
 {
-    [AllowAnonymous]
-    public class SignIn : PageModel
+    public string? ReturnUrl { get; private set; }
+
+    public IActionResult OnGet(string? returnUrl = "/")
     {
-        public void OnGet()
+        // Normalise return URL
+        if (string.IsNullOrWhiteSpace(returnUrl) || returnUrl == "/")
         {
-            // Page load logic can be added here if needed
+            returnUrl = null;
         }
+
+        ReturnUrl = returnUrl;
+        return Page();
+    }
+
+    public IActionResult OnPost(string? returnUrl = "/")
+    {
+        if (string.IsNullOrWhiteSpace(returnUrl) || !Url.IsLocalUrl(returnUrl) || returnUrl == "/")
+        {
+            returnUrl = "/";
+        }
+
+        var props = new AuthenticationProperties
+        {
+            RedirectUri = returnUrl
+        };
+
+        // Trigger the Azure AD / Entra challenge
+        return Challenge(props, OpenIdConnectDefaults.AuthenticationScheme);
     }
 }

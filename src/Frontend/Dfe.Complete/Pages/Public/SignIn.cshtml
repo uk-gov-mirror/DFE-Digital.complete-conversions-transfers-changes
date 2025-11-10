@@ -1,5 +1,5 @@
 @page "/sign-in"
-@model Dfe.Complete.Pages.Public.SignIn
+@model Dfe.Complete.Pages.Public.SignInModel
 
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 
@@ -16,10 +16,13 @@
         <p class="govuk-body">This product can be used by delivery officers or caseworkers at the Department for Education.</p>
         <p class="govuk-body">It can also be used by the Academies Operational Practice Unit and Service Support team, as well as some teams at the Education and Skills Funding Agency.</p>
         <p class="govuk-body">You can use this product to manage work that helps DfE to convert schools to academies.</p>
-        
-        <form action="/auth/azure_activedirectory_v2" method="post">
-            @* @Html.AntiForgeryToken() *@
-            <button name="button" type="submit" class="govuk-button">Sign in with your DfE Microsoft account</button>
+
+        <form method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+            <button class="govuk-button" data-module="govuk-button" type="submit">
+                Sign in with your DfE Microsoft account
+            </button>
         </form>
         
         <h2 class="govuk-heading-m">Register for access</h2>

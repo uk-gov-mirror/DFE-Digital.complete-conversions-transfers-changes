@@ -38,7 +38,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                 if (userRecord == null! && !string.IsNullOrEmpty(email))
                 {
                     userRecord = await userRepository.FindAsync(u => u.Email == email);
-                    if (userRecord != null) 
+                    if (userRecord != null)
                     {
                         userRecord.EntraUserObjectId = userId;
                         await userRepository.UpdateAsync(userRecord);
