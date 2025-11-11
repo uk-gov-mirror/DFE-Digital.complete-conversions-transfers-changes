@@ -19,7 +19,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
 
             var response = await sender.Send(listProjectQuery);
 
-            if(response != null && response.Value != null)
+            if (response != null && response.Value != null)
                 MAT = response.Value;
         }
 

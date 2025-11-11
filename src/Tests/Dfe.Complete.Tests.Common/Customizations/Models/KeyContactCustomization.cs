@@ -4,7 +4,7 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models;
 
-public class KeyContactCustomimzation : ICustomization
+public class KeyContactCustomization : ICustomization
 {
     public KeyContactId? Id { get; set; }
     public ProjectId? ProjectId { get; set; }

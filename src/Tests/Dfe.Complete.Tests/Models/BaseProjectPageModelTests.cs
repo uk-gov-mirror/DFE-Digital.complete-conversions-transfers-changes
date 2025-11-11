@@ -5,6 +5,7 @@ using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Models;
 using Dfe.Complete.Tests.Common.Assertions;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
+using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MediatR;
@@ -112,8 +113,54 @@ public class BaseProjectPageModelTests
         // Assert
         Assert.Equal(projectDto, model.Project);
     }
+
+    [Fact]
+    public async Task GetKeyContactForProjectsAsync_ReturnsAKeyContacts_WhenFound()
+    {
+        // Arrange
+        var sender = Substitute.For<ISender>();
+        var logger = Substitute.For<ILogger>();
+        var model = new TestBaseProjectPageModel(sender, logger)
+        {
+            ProjectId = Guid.NewGuid().ToString(),
+        };
+
+        var expectedKeyContacts = new Application.KeyContacts.Models.KeyContactDto();
+        var result = Result<Application.KeyContacts.Models.KeyContactDto?>.Success(expectedKeyContacts);
+
+        sender.Send(Arg.Any<Application.KeyContacts.Queries.GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
+            .Returns(result);
+
+        // Act
+        await model.GetKeyContactForProjectsAsync();
+
+        // Assert
+        Assert.Equal(expectedKeyContacts, model.KeyContacts);
+    }
+
+    [Fact]
+    public async Task GetKeyContactForProjectsAsync_ThrowsNotFoundException_WhenNotFound()
+    {
+        // Arrange
+        var sender = Substitute.For<ISender>();
+        var logger = Substitute.For<ILogger>();
+        var model = new TestBaseProjectPageModel(sender, logger)
+        {
+            ProjectId = Guid.NewGuid().ToString(),
+        };
+
+        var result = Result<Application.KeyContacts.Models.KeyContactDto?>.Success(null);
+
+        sender.Send(Arg.Any<Application.KeyContacts.Queries.GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
+            .Returns(result);
+
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<NotFoundException>(() => model.GetKeyContactForProjectsAsync());
+        Assert.Contains($"Key contacts for project {model.ProjectId} doesn't exist", exception.Message);
+    }
 }
 
 public class TestBaseProjectPageModel(ISender sender, ILogger logger) : BaseProjectPageModel(sender, logger)
 {
+    public new async Task GetKeyContactForProjectsAsync() => await base.GetKeyContactForProjectsAsync();
 }

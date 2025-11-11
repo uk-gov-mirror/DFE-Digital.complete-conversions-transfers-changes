@@ -13,27 +13,27 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ClosureOrTransferDeclaratio
     {
         [BindProperty]
         public Guid? TasksDataId { get; set; }
-        
+
         [BindProperty(Name = "notapplicable")]
         public bool? NotApplicable { get; set; }
-        
+
         [BindProperty(Name = "received")]
         public bool? Received { get; set; }
 
         [BindProperty(Name = "cleared")]
-        public bool? Cleared { get; set; } 
-        
+        public bool? Cleared { get; set; }
+
         [BindProperty(Name = "saved")]
         public bool? Saved { get; set; }
-        
+
         [BindProperty(Name = "sent")]
         public bool? Sent { get; set; }
 
-      
+
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
-            
+
             TasksDataId = Project.TasksDataId?.Value;
 
             NotApplicable = TransferTaskData.ClosureOrTransferDeclarationNotApplicable;
@@ -41,13 +41,13 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ClosureOrTransferDeclaratio
             Cleared = TransferTaskData.ClosureOrTransferDeclarationCleared;
             Saved = TransferTaskData.ClosureOrTransferDeclarationSaved;
             Sent = TransferTaskData.ClosureOrTransferDeclarationSent;
-            
+
             return Page();
         }
-        
+
         public async Task<IActionResult> OnPost()
-        {            
-            await Sender.Send(new UpdateClosureOrTransferDeclarationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!,  NotApplicable, Received, Cleared, Saved, Sent ));
+        {
+            await Sender.Send(new UpdateClosureOrTransferDeclarationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, Received, Cleared, Saved, Sent));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

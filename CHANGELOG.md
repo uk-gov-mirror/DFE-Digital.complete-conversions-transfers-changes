@@ -19,6 +19,9 @@ Security in case of vulnerabilities.
 ### Added
 - Added MAT Transfer creation end point for prepare to complete 
 
+### Changed
+- Throw exception when key_contacts record is missing on contact update tasks
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-06.1066...main) for everything awaiting release
 
 ---

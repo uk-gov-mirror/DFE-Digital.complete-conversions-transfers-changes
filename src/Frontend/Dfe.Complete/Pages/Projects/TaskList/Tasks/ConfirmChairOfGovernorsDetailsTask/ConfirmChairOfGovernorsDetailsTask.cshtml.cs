@@ -1,7 +1,6 @@
 using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.KeyContacts.Commands;
-using Dfe.Complete.Application.KeyContacts.Queries;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -26,12 +25,12 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmChairOfGovernorsDeta
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+            await GetKeyContactForProjectsAsync();
 
             var contacts = await Sender.Send(new GetContactsForProjectByCategoryQuery(Project.Id, ContactCategory.SchoolOrAcademy));
-            var chairOfGovernorsKeyContactDto = await Sender.Send(new GetKeyContactsForProjectQuery(Project.Id));
 
-            ChairOfGovernorserContactId = chairOfGovernorsKeyContactDto?.Value?.ChairOfGovernorsId?.Value;
-            KeyContactId = chairOfGovernorsKeyContactDto?.Value?.Id?.Value;
+            ChairOfGovernorserContactId = KeyContacts.ChairOfGovernorsId?.Value;
+            KeyContactId = KeyContacts.Id?.Value;
 
             Contacts = contacts?.Value ?? [];
 

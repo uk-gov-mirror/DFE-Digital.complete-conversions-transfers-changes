@@ -3,7 +3,6 @@ using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
@@ -98,7 +97,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var query = new ListEstablishmentsInMatQuery("TR123");
 
             listAllProjectsQueryService
-                .ListAllProjects(new ProjectFilters(null, null,  NewTrustReferenceNumber: "TR123"))
+                .ListAllProjects(new ProjectFilters(null, null, NewTrustReferenceNumber: "TR123"))
                 .Throws(new Exception(expectedError));
 
             // Act

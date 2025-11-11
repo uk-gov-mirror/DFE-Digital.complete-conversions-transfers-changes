@@ -176,13 +176,14 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
             }
         }
     }
-    protected async Task GetKeyContactForProjectsAsyc()
+    protected async Task GetKeyContactForProjectsAsync()
     {
         var contactsResult = await Sender.Send(new GetKeyContactsForProjectQuery(new ProjectId(Guid.Parse(ProjectId))));
-        if (!contactsResult.IsSuccess)
+        if (contactsResult.Value == null)
         {
-            throw new NotFoundException($"Could not find key contacts for project {ProjectId}");
+            throw new NotFoundException($"Key contacts for project {ProjectId} doesn't exist");
         }
-        KeyContacts = contactsResult.Value ?? new();
+
+        KeyContacts = contactsResult.Value;
     }
 }

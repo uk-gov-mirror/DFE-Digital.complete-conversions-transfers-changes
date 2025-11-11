@@ -1859,6 +1859,7 @@ public partial class ProjectsControllerTests
         Assert.Equal(project.Id.Value, result.Id?.Value);
         Assert.Equal(project.SignificantDate, DateOnly.FromDateTime(result.SignificantDate!.Value));
     }
+
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task GetKeyContactByProjectIdAsync_Async_ShouldReturn_KeyContacts(
@@ -1896,7 +1897,7 @@ public partial class ProjectsControllerTests
         }).ToList();
         await dbContext.Projects.AddRangeAsync(projects);
         var projectId = projects.First().Id;
-        var keyContact = fixture.Customize(new KeyContactCustomimzation
+        var keyContact = fixture.Customize(new KeyContactCustomization
         {
             ProjectId = projectId,
         }).Create<KeyContact>();
@@ -1914,6 +1915,7 @@ public partial class ProjectsControllerTests
         Assert.Equal(keyContact.IncomingTrustCeoId?.Value, result.IncomingTrustCeoId?.Value);
         Assert.Equal(keyContact.ChairOfGovernorsId?.Value, result.ChairOfGovernorsId?.Value);
     }
+
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task RecordDaoRevocationDecisionAsync_Async_ShouldSet_DaoRevocation(

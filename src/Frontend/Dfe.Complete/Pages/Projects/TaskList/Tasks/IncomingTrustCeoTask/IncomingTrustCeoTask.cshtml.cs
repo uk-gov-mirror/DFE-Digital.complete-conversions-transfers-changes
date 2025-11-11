@@ -1,7 +1,6 @@
 using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.KeyContacts.Commands;
-using Dfe.Complete.Application.KeyContacts.Queries;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -25,12 +24,12 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+            await GetKeyContactForProjectsAsync();
 
             var contacts = await Sender.Send(new GetContactsForProjectByCategoryQuery(Project.Id, ContactCategory.IncomingTrust));
-            var incomingTrustCeoKeyContactDto = await Sender.Send(new GetKeyContactsForProjectQuery(Project.Id));
 
-            IncomingTrustCeoContactId = incomingTrustCeoKeyContactDto?.Value?.IncomingTrustCeoId?.Value;
-            KeyContactId = incomingTrustCeoKeyContactDto?.Value?.Id?.Value;
+            IncomingTrustCeoContactId = KeyContacts.IncomingTrustCeoId?.Value;
+            KeyContactId = KeyContacts.Id?.Value;
 
             Contacts = contacts?.Value ?? [];
 

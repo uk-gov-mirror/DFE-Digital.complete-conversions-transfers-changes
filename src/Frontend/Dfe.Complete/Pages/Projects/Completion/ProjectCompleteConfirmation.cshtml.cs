@@ -45,9 +45,7 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
 
         await UpdateCurrentProject();
         await GetProjectTaskDataAsync();
-        await GetKeyContactForProjectsAsyc();
-
-        var validationErrorUrl = string.Format(RouteConstants.ProjectTaskList, ProjectId) + "?projectCompletionValidation=true";
+        await GetKeyContactForProjectsAsync();
 
         if (Project.Type == ProjectType.Transfer)
             return await CompleteTransferProjectAsync();

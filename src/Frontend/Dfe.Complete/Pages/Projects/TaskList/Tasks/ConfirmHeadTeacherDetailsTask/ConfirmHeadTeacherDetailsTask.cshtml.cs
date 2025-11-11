@@ -1,7 +1,6 @@
 using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.KeyContacts.Commands;
-using Dfe.Complete.Application.KeyContacts.Queries;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -25,12 +24,12 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmHeadTeacherDetailsTa
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+            await GetKeyContactForProjectsAsync();
 
             var contacts = await Sender.Send(new GetContactsForProjectByCategoryQuery(Project.Id, ContactCategory.SchoolOrAcademy));
-            var headTeacherKeyContactDto = await Sender.Send(new GetKeyContactsForProjectQuery(Project.Id));
 
-            HeadTeacherContactId = headTeacherKeyContactDto?.Value?.HeadteacherId?.Value;
-            KeyContactId = headTeacherKeyContactDto?.Value?.Id?.Value;
+            HeadTeacherContactId = KeyContacts.HeadteacherId?.Value;
+            KeyContactId = KeyContacts.Id?.Value;
 
             Contacts = contacts?.Value ?? [];
 

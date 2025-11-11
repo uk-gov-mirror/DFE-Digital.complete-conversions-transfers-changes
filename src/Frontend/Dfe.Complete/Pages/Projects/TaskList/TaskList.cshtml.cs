@@ -17,7 +17,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList
             await GetProjectTaskDataAsync();
             await SetIncomingTrustAsync();
             await SetOutgoingTrustAsync();
-            await GetKeyContactForProjectsAsyc();
+            await GetKeyContactForProjectsAsync();
             await SetCurrentUserTeamAsync();
             await SetDaoRevocationIfProjectIsDaoRevoked();
 
