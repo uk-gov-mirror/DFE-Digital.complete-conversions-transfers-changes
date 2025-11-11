@@ -6,6 +6,7 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Utils;
 using GovUK.Dfe.CoreLibs.Security.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 namespace Dfe.Complete.Infrastructure.Security.Authorization
@@ -32,7 +33,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                 // If the email doesn't match (claims vs DB) - reject.
                 // Persons name probably changed and there is probably an orphaned record. Contact service support
                 if (userRecord != null && !string.Equals(userRecord.Email, email, StringComparison.OrdinalIgnoreCase))
-                    return [];
+                    throw new InvalidOperationException($"Duplicate account detected. Your current email ({email}) doesn't match the email associated with your account. This may indicate a duplicate account. Please contact service support");
 
                 // If there was no OID match but there was an email match, this is probably first login. 
                 if (userRecord == null! && !string.IsNullOrEmpty(email))
