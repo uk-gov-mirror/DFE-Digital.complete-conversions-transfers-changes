@@ -1,5 +1,4 @@
 using Dfe.Complete.Domain.Constants;
-using Dfe.Complete.Infrastructure.Security.Authorization;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Security;

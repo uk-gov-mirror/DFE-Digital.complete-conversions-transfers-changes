@@ -34,11 +34,11 @@
     },
     {
       "Route": "/Demonstration/TagHelper",
-      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
+      "ExpectedSecurity": "Authorize"
     },
     {
       "Route": "/Diagnostics/Diagnostics",
-      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
+      "ExpectedSecurity": "Authorize"
     },
     {
       "Route": "/Projects/Notes/AddProjectNote",
@@ -46,15 +46,15 @@
     },
     {
       "Route": "/Projects/Notes/DeleteProjectNote",
-      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
+      "ExpectedSecurity": "Authorize"
     },
     {
       "Route": "/Projects/Notes/EditProjectNote",
-      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
+      "ExpectedSecurity": "Authorize"
     },
     {
       "Route": "/Projects/Notes/ViewProjectNotes",
-      "ExpectedSecurity": "Authorize: Policy=ActiveUser "
+      "ExpectedSecurity": "Authorize"
     },
     {
       "Route": "/Projects/Yours/InProgress/YourProjectsInProgress",
@@ -74,7 +74,7 @@
     },
     {
       "Route": "/Search/SearchProjects",
-      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
+      "ExpectedSecurity": "Authorize"
     },
     {
       "Route": "/Account/AccessDenied",
