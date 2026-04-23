@@ -3,7 +3,7 @@
 	  <UserSecretsId>540d3c9a-13ab-455b-bd72-c863b77b00bf</UserSecretsId>
 	</PropertyGroup>	
 	<ItemGroup>
-		<PackageReference Include="AutoMapper" Version="14.0.0" />
+		<PackageReference Include="AutoMapper" Version="15.1.3" />
 		<PackageReference Include="Dfe.AcademiesApi.Client" Version="1.0.11" />
 		<PackageReference Include="GovUK.Dfe.CoreLibs.AsyncProcessing" Version="1.0.12" />
 		<PackageReference Include="GovUK.Dfe.CoreLibs.Caching" Version="1.0.13" />
