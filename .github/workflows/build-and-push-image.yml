@@ -89,7 +89,7 @@ jobs:
             target-stage: "final"
             deploy: true
     steps:
-      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - uses: DFE-Digital/deploy-azure-container-apps-action/.github/actions/build@8e72e403f05ff9da09668207eef1d79e1ce9d1a7 # v5.2.1
         with:
