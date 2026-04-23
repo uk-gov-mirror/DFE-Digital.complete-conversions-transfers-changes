@@ -2,7 +2,7 @@ version: "3.8"
 services:
     zap:
         container_name: zap
-        image: ghcr.io/zaproxy/zaproxy:stable
+        image: ghcr.io/zaproxy/zaproxy:stable@sha256:707fc6b9fd8327ba48bb7b49d0c5732c179b045dab9c99f8b95410627dff4a00
         command: "zap.sh -daemon -port 8080 -host 0.0.0.0 -config api.key=${ZAP_API_KEY} -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true -config network.localServers.mainProxy.alpn.enabled=false -config network.localServers.mainProxy.address=0.0.0.0"
         user: zap
         volumes:
